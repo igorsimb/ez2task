@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEPLOYED = True
+DEPLOYED = False
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -186,7 +186,8 @@ CKEDITOR_CONFIGS = {
                        'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-']},
             {'name': 'links', 'items': ['Link', 'Unlink']},
             {'name': 'insert',
-             'items': ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar']},
+             # 'items': ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar']},
+             'items': ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar']},
             '/',
             {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
             {'name': 'colors', 'items': ['TextColor', 'BGColor']},

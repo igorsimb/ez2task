@@ -12,7 +12,7 @@
     <meta name="author" content=""/>
     <title>EZ2 Task - {% block title %}{% endblock title %}</title>
     <!-- Google action icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
 
     <!-- Bootstrap 5.1 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -119,9 +119,11 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ request.user.image.url }}" alt="profile image"
-                                     class="img-fluid rounded-circle" style="max-width:35px; max-height:35px">
+{#                                <img src="{{ request.user.image.url }}" alt="profile image"#}
+{#                                     class="img-fluid rounded-circle" style="max-width:35px; max-height:35px">#}
+                                <span class="material-icons-outlined custom-material-icons fs-3">settings</span>
                             </a>
+
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{% url 'user_profile' request.user.slug %}">Profile</a>
                                 <a class="dropdown-item" href="{% url 'user_update' request.user.slug %}">Settings</a>

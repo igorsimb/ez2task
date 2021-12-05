@@ -119,12 +119,12 @@ class User(AbstractBaseUser):
         self.slug = slugify(self.username)
         super().save(*args, **kwargs)
 
-        img = Image.open(self.image.path)
+        img = Image.open(self.image)
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
-            img.save(self.image.path)
+            img.save(self.image)
 
     class Meta:
         ordering = ('username',)

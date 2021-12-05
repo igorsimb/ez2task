@@ -42,7 +42,8 @@ class ClearableFileInputCustom(forms.ClearableFileInput):
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('image', 'username', 'email', 'first_name', 'last_name', 'account_type')
+        # fields = ('image', 'username', 'email', 'first_name', 'last_name', 'account_type')
+        fields = ('username', 'email', 'first_name', 'last_name', 'account_type')
 
         widgets = {'image': ClearableFileInputCustom()}
 
@@ -59,7 +60,7 @@ class UserUpdateForm(forms.ModelForm):
 
         self.helper.layout = Layout(
 
-            Field('image'),
+            # Field('image'),
             FloatingField('username'),
             FloatingField('email'),
             FloatingField('first_name'),
