@@ -1,0 +1,171 @@
+{% extends 'main_app/base.html' %}
+{% load humanize %}
+{% block title %}Manage Tasks{% endblock title %}
+{% block content %}
+
+<div id="app" v-cloak>
+    <p class="breadcrumb-item active">Manage Tasks ({{ items.count }})</p>
+
+
+    {% if not category_list %}
+        <a href="{% url 'category_create' %}?next={% url 'my_tasks' %}"
+           class="btn btn-lg btn-success bg-gradient mb-3">Create Project</a>
+    {% elif not items and category_list %}
+        <a href="{% url 'create' %}?next={% url 'my_tasks' %}" class="btn btn-sm btn-outline-success mb-3">Create
+            Task</a>
+        <p class="h5">You do not have any Tasks yet. Create one by pressing 'Create Task' button above.</p>
+    {% else %}
+        <a href="{% url 'create' %}?next={% url 'manage_tasks' %}" class="btn btn-sm btn-outline-success mb-3">Create
+            Task</a>
+        <div class="form-check mb-2">
+            <input @click="toggleComplete" class="form-check-input" type="checkbox" value="" id="completeCheck">
+                <label class="form-check-label" for="completeCheck">
+                    <small>Show Complete</small>
+                </label>
+        </div>
+    {% endif %}
+
+    <div class="row flex-row flex-md-nowrap gx-5 overflow-auto">
+        {% for category in category_list %}
+            <div class="col mb-3" style="max-width: 24rem; min-width: 22rem; font-size: clamp(1rem, 0.7vw, 2rem);">
+
+                <div class="card bg-gradient text-dark shadow"
+                     style="max-height:79vh;background-color: #dadadf">
+
+                    <div id="categoryTitle" class="d-flex justify-content-between">
+                        <div></div>
+                        <div class="h5 text-center my-2 card-title">{{ category.category_title }}</div>
+                        <div>
+                            <a class='me-1'
+                               href="{% url 'category_update' category.id %}?next={% url 'manage_tasks' %}">
+                                <i class="material-icons link-secondary" style="font-size:0.8rem;">mode_edit</i>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="overflow-auto"> {# overflow-auto START #}
+
+                        {% for item in items %}
+                            {% if request.user.company %} {# if user HAS a company #}
+                                {% if user in item.assigned_to.all or user.account_type == 'Admin' %}
+
+                                    {% if item.category == category %}
+                                        <div {% if item.complete %}v-if="isVisible"{% endif %}
+                                             class="{% if item.complete %}fade-in{% endif %} d-flex justify-content-between my-0 mx-1 p-0 my-1
+        border rounded shadow-sm flex-fill task_div
+        {% if item.priority == 'High' %}border-danger border-4 border-top-0 border-bottom-0 border-end-0{% endif %}">
+
+                                            {# transform needed so stretch link only applies to this div #}
+                                            <div class="flex-fill p-2" style="transform: rotate(0)">
+                                                <a class="text-decoration-none link-dark stretched-link"
+                                                   href="{% url 'detail' item.id %}">{{ item.title }}</a>
+                                                <br>
+                                                {% if item.complete %}
+                                                    <div class="badge rounded-pill text-dark badgeOpacity mt-2"
+                                                         style="background: rgba(108, 117, 125, 0.3)">Completed
+                                                    </div>
+                                                {% elif item.deadline_date_time < timeout %}
+                                                    <div class="badge rounded-pill bg-danger badgeOpacity mt-2">
+                                                        - {{ item.deadline_date_time|timesince }}</div>
+                                                {% else %}
+                                                    <div class="badge rounded-pill text-dark fw-normal border border-secondary mt-2">{{ item.deadline_date_time }}</div>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="p-2">
+                                                <a href="{% url 'update' item.id %}?next={% url 'manage_tasks' %}"
+                                                   title="Edit Task"><i class="material-icons link-secondary"
+                                                                        style="font-size:0.9rem">mode_edit</i></a>
+                                            </div>
+
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %} {# if user does NOT have a company #}
+                                {% if item.category == category %}
+                                    <div class="d-flex justify-content-between my-0 mx-1 p-2 my-1
+                border rounded shadow-sm flex-fill task_div
+                {% if item.priority == 'High' %}border-danger border-4 border-top-0 border-bottom-0 border-end-0{% endif %}">
+                                        <div>
+                                            <a class="text-decoration-none link-dark"
+                                               href="{% url 'detail' item.id %}">{{ item.title }}</a>
+                                        </div>
+                                        <div>
+                                            <a href="{% url 'update' item.id %}?next={% url 'manage_tasks' %}"
+                                               title="Edit Task"><i
+                                                    class="material-icons link-secondary">mode_edit</i></a>
+                                            <a href="{% url 'delete' item.id %}?next={% url 'manage_tasks' %}"
+                                               title="Delete Task"><i
+                                                    class="material-icons text-danger">delete_forever</i></a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {# overflow-auto END #}
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if not category_list %}
+            <div class="h5"> You do not have any projects yet. Create your first one (e.g. 'Build a website',
+                    'Save the World', etc) by pressing the big green button.
+                </div>
+        {% else %}
+
+            <div class="col p-0">
+                <a href="{% url 'category_create' %}?next={% url 'manage_tasks' %}" style="opacity: 0.7;" title="Add Project">
+                    <i class="material-icons text-secondary" id="addProject" onmouseover="addClasses()" onmouseout="removeClasses()">add_circle_outline</i>
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+    </div>
+
+<!-- Add hover effect to "Add Project" button -->
+<script>
+
+function addClasses() {
+  var element = document.getElementById("addProject");
+  element.classList.add("rounded-circle","bg-secondary","text-light");
+  console.log(addProject)
+}
+
+function removeClasses() {
+  var element = document.getElementById("addProject");
+  element.classList.remove("rounded-circle","bg-secondary","text-light");
+}
+</script>
+
+<!-- Vuejs3-->
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+    let app = Vue.createApp({
+        data: function () {
+            return {
+                greeting: 'Hello Vue 3!',
+                isVisible: false,
+            }
+        },
+        methods: {
+            toggleComplete() {
+                this.isVisible = !this.isVisible;
+            }
+        }
+    })
+    app.mount('#app')
+
+    /* This negates strange Chrome behavior when
+    History back keeps checkbox checked,  while not showing the required content for this state
+    Firefox works as intended, aka the opposite of Chrome */
+    var isChrome = !!window.chrome
+    onload = () => {
+        if (isChrome) {
+            document.getElementById('completeCheck').checked = false;
+        }
+    };
+</script>
+
+{% endblock content %}

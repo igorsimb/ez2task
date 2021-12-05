@@ -1,0 +1,125 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block title %}Manage Users{% endblock title %}
+{% block content %}
+
+    <p class="breadcrumb-item active">Manage users ({{ request.user.company.users.count }})</p>
+
+    {# List.js library: https://listjs.com/examples/table/ #}
+    <div id="users1">
+        <div class="d-flex justify-content-between align-items-center my-2">
+            <a href="{% url 'user_create' %}" class="btn btn-sm btn-outline-success" title="Add User">
+                <i class="material-icons custom-material-icons">person_add</i> Add User
+            </a>
+            <input class="search form-control" style="max-width: 13rem" placeholder="Search" autofocus="autofocus"/>
+        </div>
+
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th scope="col" style="cursor:pointer; min-width: 10rem" class="sort" data-sort="name"><i
+                        class="material-icons icon-sort">sort</i>Username
+                </th>
+                <th scope="col" style="cursor:pointer" class="sort" data-sort="email"><i
+                        class="material-icons icon-sort">sort</i>Email
+                </th>
+                <th scope="col" style="cursor:pointer" class="sort" data-sort="full_name"><i
+                        class="material-icons icon-sort">sort</i>Full Name
+                </th>
+                <th scope="col" style="cursor:pointer" class="sort" data-sort="date_created"><i
+                        class="material-icons icon-sort">sort</i>Date Created
+                </th>
+                <th scope="col" style="cursor:pointer" class="sort" data-sort="account_type"><i
+                        class="material-icons icon-sort">sort</i>Account Type
+                </th>
+                <th scope="col" style="min-width: 6vw;cursor:pointer">Action</th>
+            </tr>
+            </thead>
+            <tbody class="list">
+            {% if request.user.company %} {# if user belongs to a Company #}
+
+            {% for user in request.user.company.users.all %}
+                <tr>
+                    <td class="name">
+                        <a href="{% url 'user_profile' user.slug %}" class="fw-normal link-dark text-decoration-none">
+                            {{ user.username|lower }}
+                        </a>
+                    </td>
+                    <td class="email">{{ user.email }}</td>
+                    <td class="full_name">
+                        <a href="{% url 'user_profile' user.slug %}" class="fw-normal link-dark text-decoration-none">
+                            {% if user.first_name and user.last_name %}{{ user.last_name|capfirst }}, {{ user.first_name|capfirst }}
+                        </a>
+                    {% else %} N/A
+                    {% endif %}</td>
+                    <td class="date_created">{{ user.date_joined|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td class="account_type">{{ user.account_type }}</td>
+                    <td>
+                        <a href="{% url 'user_profile' user.slug %}" title="Profile">
+                            <i class="material-icons m-0">account_circle</i>
+                        </a>
+
+                        <a href="{% url 'user_update' user.slug %}" title="Edit">
+                            <i class="material-icons m-0">mode_edit</i>
+                        </a>
+                        {% if not request.user == user and request.user.account_type == 'Admin' %} {# user cannot delete themself #}
+                            <a href="{% url 'user_delete' user.slug %}" title="Delete">
+                                <i class="material-icons text-danger m-0">delete_forever</i>
+                            </a>
+                        {% endif %}
+
+
+                    </td>
+                </tr>
+            {% endfor %}
+            {% else %} {# if user does NOT belong to a Company, just show this user's info #}
+                    <tr>
+                    <td class="name">
+                        <a href="{% url 'user_profile' user.slug %}" class="fw-normal link-dark text-decoration-none">
+                            {{ user|capfirst }}
+                        </a>
+                    </td>
+                    <td class="date_created">{{ user.date_joined|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td class="account_type">{{ user.account_type }}</td>
+                    <td>
+                        <a href="{% url 'user_profile' user.slug %}" title="Profile">
+                            <i class="material-icons m-0">account_circle</i>
+                        </a>
+
+                        <a href="{% url 'user_update' user.slug %}" title="Edit">
+                            <i class="material-icons m-0">mode_edit</i>
+                        </a>
+
+                        <a href="{% url 'user_delete' user.slug %}" title="Delete">
+                            <i class="material-icons text-danger m-0">delete_forever</i>
+                        </a>
+
+                    </td>
+                </tr>
+
+            {% endif %}
+            </tbody>
+        </table>
+        {#    Show paginationo button only if more than 10 users in the company    #}
+        {% if request.user.company.users.count > 10 %}
+            <ul class="pagination pagination_button"></ul>
+        {% endif %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="{% static 'main_app/js/list.min.js' %}"></script>
+
+    <script>
+        var options = {
+            valueNames: ['name', 'email', 'full_name', 'date_created', 'account_type'],
+            page: 10,
+            pagination: [{
+                innerWindow: 2,
+                outerWindow: 1,
+            }]
+
+        };
+
+        var userList = new List('users1', options);
+    </script>
+
+{% endblock content %}

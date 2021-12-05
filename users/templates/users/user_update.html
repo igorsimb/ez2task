@@ -1,0 +1,107 @@
+{% extends 'main_app/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ user }}'s Settings{% endblock title %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+{#    <li class="breadcrumb-item"><a href="{% url 'manage_users' %}">Manage users</a></li>#}
+    <li class="breadcrumb-item active" aria-current="page">{{ user }}'s Profile Settings</li>
+  </ol>
+</nav>
+{#<img  src = "{{ user.image.url }}" alt="profile image" class="img-thumbnail img-fluid" style="max-width:200px">#}
+
+    <!-- User profile header -->
+    <div class="d-flex justify-content-center">
+        <div class="d-flex align-items-center flex-column">
+            <img src="{{ user.image.url }}" alt="profile image" class="img-thumbnail img-fluid rounded-circle" style="max-width:150px;">
+            <h2 class="account-heading">
+                {% if user.first_name and user.last_name %}
+                    {{ user.first_name }} {{ user.last_name }}
+                {% else %}
+                    {{ user.username|capfirst }}
+                {% endif %}
+            </h2>
+            <div class="text-muted">{{ user.email }}</div>
+
+            {% if request.user.company %}
+                <div class="text-muted">{{ user.account_type }} @{{ user.company }}</div>
+            {% endif %}
+
+            <div class="btn-group d-inline mt-2">
+                  <a href="{% url 'user_profile' user.slug %}" class="btn btn-sm btn-outline-success">Overview</a>
+                  <a href="#" class="btn btn-sm btn-outline-success active">Settings</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br>
+
+{#    <div class="col-xl-3 col-md-6 mb-4 text-center">#}
+                <div class="card bg-light bg-gradient h-auto py-2 mb-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <form method="POST" enctype="multipart/form-data" autocomplete="off" id="updateUser">
+                                <fieldset form="updateUser">
+                                    {% csrf_token %}
+{#                                    {{ form|crispy }}#}
+                                    {% crispy form %}
+
+{#                                    {{ form.image|as_crispy_field }}#}
+{#                                    {{ form.username|as_crispy_field }}#}
+{#                                    {{ form.email|as_crispy_field }}#}
+{#                                    {{ form.first_name|as_crispy_field }}#}
+{#                                    {{ form.last_name|as_crispy_field }}#}
+
+                                    {% if not request.user.account_type == 'Agent' and not request.user.slug == user.slug %}
+                                        {{ form.account_type|as_crispy_field }}
+                                    {% else %}
+                                        <div class="invisible" style="display: none">{{ form.account_type|as_crispy_field }}</div>
+                                    {% endif %}
+
+                                    <input class="btn btn-outline-success mt-2" type="submit" value="Update">
+                                </fieldset>
+                                </form>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{#            </div>#}
+
+
+    {% if not request.user.company %}
+        <p class="ms-2">Want to collaborate with others? <a href="{% url 'company_create' %}" class="link-secondary">Create a company</a> and add new users.
+            <a class="link-success text-decoration-none" title="Click for more info" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                <span class="material-icons custom-material-icons">help</span>
+            </a>
+        </p>
+
+
+{# Create a company FAQ #}
+{% include 'main_app/create_company_faq.html' %}
+
+
+    {% else %}
+        <!-- Only admins can change company name and only from their own account settings -->
+        {% if request.user.account_type == 'Admin' and request.user.slug == user.slug %}
+                <span class="ms-2">
+                    <a href="{% url 'company_update' request.user.company.pk %}?next={% url 'user_update' request.user.slug %}" class="link-secondary">Update company's info</a>
+                </span>
+{#            TODO: change stingformat to slug (info on stringformat: https://docs.djangoproject.com/en/3.2/ref/templates/builtins/#stringformat #}
+
+        {% endif %}
+    {% endif %}
+
+{% if request.user == user %}
+    <p><a class="link-secondary ms-2" href="{% url 'password_reset' %}">Reset password</a></p>
+{% endif %}
+
+
+
+
+{% endblock content %}

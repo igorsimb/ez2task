@@ -1,0 +1,125 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block title %}View Task{% endblock title %}
+{% block content %}
+
+    <div class="d-flex justify-content-between mt-4">
+        <div class="row border mb-3 w-75">
+            <div class="col card-body bg-light">
+                <div class="h3 my-2 card-title">
+                    {{ items.title }}
+                </div>
+                <div class="my-0 p-3 border bg-white rounded shadow-sm">
+                    {{ items.description | safe }}
+                </div>
+                <a class="btn btn-sm btn-outline-secondary mt-3"
+                   href="{% url 'update' items.pk %}?next={% url 'detail' items.pk %}">Edit Task</a>
+                {% comment %}
+                    ?next = page that user came from.
+                    Source: https://docs.djangoproject.com/en/3.2/ref/request-response/#django.http.HttpRequest.META
+                {% endcomment %}
+                <a class="btn btn-sm btn-danger mt-3"
+                   href="{% url 'delete' items.pk %}?next={{ request.META.HTTP_REFERER }}">Delete Task</a>
+            </div>
+        </div>
+
+        {# Task info panel #}
+        <div class="card shadow shadow-sm h-100" style="max-width: 18rem; font-size: 0.8rem;">
+            <div class="card-header fw-bold">
+                Deadline: {{ items.deadline_date_time|naturaltime }}
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><span class="text-muted">Created on:</span> {{ items.date_posted }}</li>
+                <li class="list-group-item"><span class="text-muted">Project:</span> {{ items.category }}</li>
+                <li class="list-group-item"><span class="text-muted">Priority:</span>
+                    {% if items.priority == 'High' %}
+                        <span class="text-danger">{{ items.priority }}</span>
+                    {% else %}
+                        <span>{{ items.priority }}</span>
+                    {% endif %}
+                </li>
+                <li class="list-group-item"><span class="text-muted">Status:</span>
+                    {% if items.complete %}
+                        <span class="text-success">Completed</span>
+                    {% elif items.deadline_date_time < timeout %}
+                        <span class="text-danger fw-bold">Overdue</span>
+                    {% elif items.complete == False %}
+                        Ongoing <br>
+                    {% endif %}
+                </li>
+                <li class="list-group-item"><span class="text-muted">Created by:</span>
+                    <a class="text-decoration-none link-primary" href="{% url 'user_profile' items.author.slug %}">
+                        {{ items.author }}
+                    </a></li>
+                <li class="list-group-item"><span class="text-muted">Assigned to:</span><br>
+                    {% for assignee in items.assigned_to.all %}
+                        {% if not forloop.last %} {# last person in the assignee list #}
+                            <a class="text-decoration-none link-primary" href="{% url 'user_profile' assignee.slug %}">
+                                {{ assignee }},
+                            </a>
+                        {% else %}
+                            <a class="text-decoration-none link-primary" href="{% url 'user_profile' assignee.slug %}">
+                                {{ assignee }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+
+                </li>
+            </ul>
+        </div>
+        {# Empty div to better allign the information card #}
+        <div style="width: 5vw"></div>
+    </div>
+
+    <!-- Comments -->
+    <div class="section">
+        <h5 class="mb-3">Comments ({{ task_comments_count }})</h5>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- display comment -->
+                {% for comment in task_comments %}
+                    {% if comment.is_published %}
+                        <div class="d-flex mb-3">
+                            <div class="me-2">
+                                <img src="{{ comment.user.image.url }}" alt="profile image"
+                                     class="img-thumbnail img-fluid rounded-circle" style="max-width:60px">
+                            </div>
+                            <div class="revealer badge badge-secondary rounded text-wrap bg-light text-dark text-start border border-secondary">
+                                <div class="m-2 ">
+                                    <div>
+                                        {{ comment.user|capfirst }}
+                                        <span class="text-muted fw-normal ">{{ comment.date_posted }}</span>
+
+                                    </div>
+                                </div>
+                                <div class="fw-normal p-1">
+                                    {{ comment.content }}
+                                </div>
+                            </div>
+                            {% if request.user.account_type == 'Admin' or not request.user.company %}
+                                <div class="hideMe"><a class="btn btn-close"
+                                                       href="{% url 'comment_delete' comment.pk %}"></a></div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- display the form -->
+        <form method="POST" action="{% url 'detail' items.pk %}">
+            {% csrf_token %}
+            <div class="form-group w-50 mt-3">
+                {{ form.content }}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success mt-2">Comment</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock content %}

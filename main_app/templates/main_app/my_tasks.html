@@ -1,0 +1,162 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block title %}My Tasks{% endblock title %}
+{% block content %}
+
+
+<div id="app" v-cloak>
+
+    <p class="breadcrumb-item active">Tasks assigned to me ({{ tasks.count }})</p>
+
+    {% if not category_list %}
+        <a href="{% url 'category_create' %}?next={% url 'my_tasks' %}"
+           class="btn btn-lg btn-success bg-gradient mb-3">Create Project</a>
+        <div class="h5"> You do not have any projects yet. Create your first one (e.g. 'Build a website',
+                    'Save the World', etc) by pressing the big green button.
+                </div>
+    {% elif not tasks and category_list %}
+        <a href="{% url 'create' %}?next={% url 'my_tasks' %}" class="btn btn-sm btn-outline-success mb-3">Create
+            Task</a>
+        <p class="h5">You do not have any Tasks yet. Create one by pressing 'Create Task' button above.</p>
+    {% else %}
+        <a href="{% url 'create' %}?next={% url 'my_tasks' %}" class="btn btn-sm btn-outline-success mb-3">Create
+            Task</a>
+        <div class="form-check mb-2">
+            <input @click="toggleComplete" class="form-check-input" type="checkbox" value="" id="completeCheck">
+                <label class="form-check-label" for="completeCheck">
+                    <small>Show Complete</small>
+                </label>
+        </div>
+    {% endif %}
+
+{#    {% if not tasks and category_list %}#}
+{#        <p>You do not have any Tasks yet. Create one by pressing 'Create Task' button above.</p>#}
+{#    {% else %}#}
+{#        <div class="form-check mb-2">#}
+{#            <input @click="toggleComplete" class="form-check-input" type="checkbox" value="" id="completeCheck">#}
+{#                <label class="form-check-label" for="completeCheck">#}
+{#                    <small>Show Complete</small>#}
+{#                </label>#}
+{#        </div>#}
+{#    {% endif %}#}
+    <div class="row gx-5">
+        {% for category in category_list %}
+            <div class="col border-danger mb-3" style="max-width: 24rem;">
+                <div class="card bg-gradient text-dark overflow-auto shadow"
+                     style="max-height:83vh; background-color: #dadadf">
+                    <div id="categoryTitle" class="d-flex justify-content-between %}">
+                        <div></div>
+                        <div class="h5 text-center my-2 card-title">
+                            {{ category.category_title }}
+                        </div>
+                        <div>
+                            {% if not request.user.company %}
+                                {# Don't show Category Edit link if user has company #}
+                                <a class='me-1'
+                                   href="{% url 'category_update' category.id %}?next={% url 'my_tasks' %}"><i
+                                        class="material-icons link-secondary"
+                                        style="font-size:0.8rem;">mode_edit</i></a>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                    {% for task in tasks %}
+
+                        {% if task.category == category %}
+                            <div {% if task.complete %}v-if="isVisible"{% endif %}
+                                 class="{% if task.complete %}fade-in{% endif %} d-flex justify-content-between my-0 mx-1 p-0 my-1
+            border rounded shadow-sm flex-fill task_div
+            {% if task.priority == 'High' %}border-danger border-4 border-top-0 border-bottom-0 border-end-0{% endif %}">
+
+                                {# transform needed so stretch link only applies to this div #}
+                                <div class="flex-fill p-2" style="transform: rotate(0)">
+                                    <a class="text-decoration-none link-dark stretched-link"
+                                       href="{% url 'detail' task.id %}">{{ task.title }}</a>
+                                    <br>
+                                    {% if task.complete %}
+                                        <div class="badge rounded-pill text-dark badgeOpacity mt-2"
+                                             style="background: rgba(108, 117, 125, 0.3)">Completed
+                                        </div>
+                                    {% elif task.deadline_date_time < timeout %}
+                                        <div class="badge rounded-pill bg-danger badgeOpacity mt-2">
+                                            - {{ task.deadline_date_time|timesince }}</div>
+                                    {% else %}
+                                        <div class="badge rounded-pill text-dark fw-normal border border-secondary mt-2">{{ task.deadline_date_time }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="p-2">
+                                    <a href="{% url 'update' task.id %}?next={% url 'my_tasks' %}"
+                                       title="Edit Task"><i class="material-icons link-secondary"
+                                                            style="font-size:0.9rem">mode_edit</i></a>
+                                </div>
+
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if not request.user.company %}
+            {% if category_list %}
+                <div class="col p-0">
+                    <a href="{% url 'category_create' %}?next={% url 'my_tasks' %}" style="opacity: 0.7;" title="Add Project">
+                       <i class="material-icons text-secondary" id="addProject" onmouseover="addClasses()" onmouseout="removeClasses()">add_circle_outline</i>
+                    </a>
+                </div>
+            {% endif %}
+        {% endif %}
+
+    </div>
+</div>
+
+
+<!-- Add hover effect to "Add Project" button -->
+<script>
+
+function addClasses() {
+  var element = document.getElementById("addProject");
+  element.classList.add("rounded-circle","bg-secondary","text-light");
+  console.log(addProject)
+}
+
+function removeClasses() {
+  var element = document.getElementById("addProject");
+  element.classList.remove("rounded-circle","bg-secondary","text-light");
+}
+</script>
+
+<!-- Vuejs3-->
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+    let app = Vue.createApp({
+        data: function () {
+            return {
+                greeting: 'Hello Vue 3!',
+                isVisible: false,
+            }
+        },
+        methods: {
+            toggleComplete() {
+                this.isVisible = !this.isVisible;
+            }
+        }
+    })
+    app.mount('#app')
+</script>
+
+<script>
+    /* This negates strange Chrome behavior when
+    History back keeps checkbox checked,  while not showing the required content for this state
+    Firefox works as intended, aka opposite of Chrome.*/
+    var isChrome = !!window.chrome
+    onload = () => {
+        if (isChrome) {
+            document.getElementById('completeCheck').checked = false;
+        }
+    };
+</script>
+
+{% endblock content %}

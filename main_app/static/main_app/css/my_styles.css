@@ -1,0 +1,168 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    /*background-color: #f8f9fa;*/
+}
+
+.task_div {
+    background-color: #fff;
+    transition: background-color 0.5s ease;
+}
+
+.task_div:hover {
+    background-color: #eeeeee;
+}
+
+.custom-material-icons {
+    display: inline-flex;
+    vertical-align: text-bottom;
+    font-size: 1.2rem;
+}
+
+.badgeOpacity {
+    opacity: 0.7;
+}
+
+.hideMe {
+    opacity: 0;
+}
+.hideMe:hover {
+    opacity: 1;
+}
+
+.revealer:hover + .hideMe {
+  opacity: 1;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+/* Fade in animation START */
+.fade-in {
+  animation: fadeIn 0.7s;
+  -webkit-animation: fadeIn 0.7s;
+  -moz-animation: fadeIn 0.7s;
+  -o-animation: fadeIn 0.7s;
+  -ms-animation: fadeIn 0.7s;
+}
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-moz-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-webkit-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+/* Fade in animation END */
+
+
+/* Manage users styling START */
+.icon-sort:hover {
+    background-color: grey;
+    color: white;
+    border-radius: 50%
+}
+
+.icon-sort:active {
+    background-color: black
+}
+
+.pagination li a.page {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    margin: 0 0.1rem;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid #6c757d;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.pagination li a.page:hover {
+    color: #fff;
+}
+
+
+.pagination li {
+    text-decoration: none;
+    padding: 0.1rem 0.15rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+    border-color: #6c757d;
+
+}
+
+.pagination li.active {
+    background: #6c757d;
+    color: #fff;
+    text-decoration: none;
+
+}
+
+.pagination li.active a, .pagination li.active a.page-link {
+    background: #6c757d;
+    color: #fff;
+    text-decoration: none;
+}
+
+.pagination li.active a:hover {
+    background: #6c757d;
+    color: #fff;
+    text-decoration: none;
+}
+
+    .pagination li a:hover {
+    background: #6c757d;
+    color: #fff;
+    text-decoration: none;
+}
+/* Manage users styling END */
+
+input.form-check-input {
+    accent-color: #198754;
+}
+
+.custom-toggler {
+    display: none;
+    /*visibility: hidden;*/
+}
+
+.login-register-window {
+    max-width: 25vw;
+}
+
+@media (max-width: 768px) {
+    .custom-toggler {
+        display: inline;
+    }
+
+    .login-register-window {
+        max-width: 75vw;
+    }
+
+}

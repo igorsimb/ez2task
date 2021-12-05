@@ -1,0 +1,24 @@
+{% extends 'main_app/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Update Company{% endblock title %}
+{% block content %}
+
+<p class="breadcrumb-item active">Update Company's Info
+    <a class="link-success text-decoration-none" title="Click for more info" type="button"
+       data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+        <span class="material-icons custom-material-icons fs-6">help</span>
+    </a>
+</p>
+
+{# Create a company FAQ #}
+{% include 'main_app/create_company_faq.html' %}
+
+<form method="POST" autocomplete="off">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-outline-success mt-2" type="submit" value="Update">
+    <button type="button" class="btn btn-outline-danger mt-2" onclick="history.back()">Cancel</button>
+</form>
+
+
+{% endblock content %}

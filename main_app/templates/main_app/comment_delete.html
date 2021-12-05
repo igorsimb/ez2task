@@ -1,0 +1,14 @@
+{% extends 'main_app/base.html' %}
+{% block title %}Delete Comment{% endblock title %}
+{% block content %}
+
+
+
+<form method="POST">
+    {% csrf_token %}
+    <h2>Are you sure you want to delete the comment?</h2>
+    <button class="btn btn-danger" type="submit">Yes, Delete</button>
+    <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Cancel</button>
+</form>
+
+{% endblock content %}

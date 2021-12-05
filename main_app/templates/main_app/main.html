@@ -1,0 +1,421 @@
+{% extends 'main_app/base.html' %}
+{% load mathfilters %}
+
+{% block title %}Dashboard{% endblock title %}
+{% block content %}
+    <div class="container-fluid">
+        <p class="breadcrumb-item active">Dashboard</p>
+    </div>
+
+
+    <div class="row px-2">
+
+        <!-- TASKS OVERALL card -->
+        <div class="col-xl-3 col-md-6 mb-4 text-center">
+            <div class="card bg-secondary bg-gradient shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-light text-uppercase mb-1">
+                                <a class="stretched-link text-decoration-none text-light" data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Active: {{ tasks_not_completed.count }}
+Completed: {{ tasks_completed.count }}">TASKS OVERALL</a>
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-light">{{ tasks.count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HEALTHY TASKS card. Health = more than 24 hours left -->
+        <div class="col-xl-3 col-md-6 mb-4 text-center">
+            <div class="card bg-success bg-gradient shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-light text-uppercase mb-1">
+                                <a class="stretched-link text-decoration-none text-light" data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="More than a day left till deadline">
+                                    HEALTHY TASKS
+                                </a>
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-light">{{ not_overdue.count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UNHEALTHY TASKS card -->
+        <div class="col-xl-3 col-md-6 mb-4 text-center">
+            <div class="card bg-danger bg-gradient shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-light text-uppercase mb-1">
+                                <a class="stretched-link text-decoration-none text-light" data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Less than a day left till deadline or overdue tasks:
+
+{% for unhealthy_task in unhealthy %}{{ unhealthy_task.title }}
+{% endfor %}">
+                                    Unhealthy tasks
+                                </a>
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-light">
+                                {{ unhealthy.count }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row px-2">
+
+        <!-- Tasks by Project chart -->
+        <div class="col-xl-8 col-lg-7" style="width:auto">
+            <div class="card shadow mb-4">
+                <div
+                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-dark">
+                        {% if request.user.account_type == 'Agent' %}My{% endif %} Active Tasks by Project
+                    </h6>
+                </div>
+
+                <div class="card-body">
+                    <div class="chart-container" style="width:30vw;min-height:36vh">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="col-xl-4 col-lg-5" style="width:auto">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div
+                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-dark">Tasks Created by Month</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-container" style="width:30vw;min-height:36vh">
+                        <canvas id="myChart1"></canvas>
+                        <button class="btn btn-sm btn-outline-secondary ms-2" id='previous' onclick="nextData(-6, -6)">
+                            <i class="material-icons custom-material-icons">chevron_left</i>Previous 6 months
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" id='next' onclick="nextData(6, 6)" disabled>
+                            Next 6 months<i class="material-icons custom-material-icons">chevron_right</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row px-2">
+        <div class="col-lg-6 mb-4">
+
+            <!-- PROGRESS BARS  -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-dark">
+                        {% if request.user.company %}
+                            All company's projects
+                        {% else %}
+                            My projects
+                        {% endif %}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% for category in company_categories %}
+
+                        {% with noncompleted=category.items_count all=category.item_set.count %}
+                            {# reversing to negative (i.e. noncomplete*(-1)), so that we can use |add filter #}
+                            {% widthratio noncompleted 1 -1 as noncompleted %}
+                            {% with completed=category.item_set.count|add:noncompleted %}
+                                {% with percentage=completed|div:all|mul:100|floatformat:"0" %}
+
+                                    {% if not complete == all %} {# show only non-completed projects #}
+                                        <h4 class="small font-weight-bold">{{ category.category_title }}
+                                        </h4>
+                                        <div class="progress mb-4" style="transform: rotate(0)">
+                                            <div class="progress-bar bg-gradient {% cycle 'bg-primary' 'bg-success' 'bg-danger' 'bg-warning text-dark' 'bg-info text-dark' %}"
+                                                 role="progressbar" style="width: {{ percentage }}%"
+                                                 aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                <a class="stretched-link" data-bs-toggle="tooltip"
+                                                   data-bs-placement="top"
+                                                   title="Completed/Overall: {{ completed }}/{{ all }}"></a>{{ percentage }}%
+                                            </div>
+                                        </div>
+
+                                    {% endif %}
+
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+
+            <!-- Deadline in less than a week -->
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-dark">Deadline in less than a week</h6>
+                </div>
+                <div class="card-body">
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Task</th>
+                            <th scope="col">Time left</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for task in tasks_not_completed|dictsort:"deadline_date_time" %}
+                            {% if task.deadline_date_time > now and task.deadline_date_time < week_left %}
+
+                                <tr style="transform: rotate(0)">
+                                    <th scope="row"
+                                        class="{% cycle 'table-primary' 'table-success' 'table-danger' 'table-warning text-dark' 'table-info text-dark' %}">
+                                        <a class="stretched-link link-dark text-decoration-none"
+                                           href="{% url 'detail' task.pk %}">{{ task.title }}</a>
+                                    </th>
+                                    <td colspan="2"
+                                        class="{% cycle 'table-primary' 'table-success' 'table-danger' 'table-warning text-dark' 'table-info text-dark' %}">
+                                        {{ task.deadline_date_time|timeuntil }}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+
+            {# chart.js#}
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"
+                    integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg=="
+                    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+            {# chart.js labels plugin#}
+            <script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                var ctx = document.getElementById('myChart').getContext('2d');
+                Chart.register(ChartDataLabels);
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [{% for category in categories %}'{{ category.category_title }}', {% endfor %}],
+                        datasets: [{
+                            label: '# Tasks by Project',
+                            hoverBackgroundColor: 'effect', // any text will do for the hover effect
+                            hoverBorderWidth: '1',
+                            data: [{% for category in categories %}{{ category.items_count }}, {% endfor %}],
+                            backgroundColor: [
+                                'rgba(220, 53, 69, 1)',
+                                'rgba(13, 110, 253, 1)',
+                                'rgba(255, 193, 7, 1)',
+                                'rgba(25, 135, 84, 1)',
+                                'rgba(13, 202, 240, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderColor: [
+                                'rgba(220, 53, 69, 1)',
+                                'rgba(13, 110, 253, 1)',
+                                'rgba(255, 193, 7, 1)',
+                                'rgba(25, 135, 84, 1)',
+                                'rgba(13, 202, 240, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                align: 'top',
+                            }
+                        },
+                        layout: {
+                            padding: {
+                                top: 25,
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+
+                        }
+                    }
+                });
+
+                // Register the datalabels plugin to all charts:
+                {#Chart.register(ChartDataLabels);#}
+                // setup
+                const myMonth = [];
+                const myMonthDataPoints = []; // array of numbers of movies in a month
+
+                {% for month in per_month %}
+                    myMonth.push(`{{ month.month|date:'M Y' }}`);
+                    myMonthDataPoints.push({{ month.c }});
+                {% endfor %}
+
+                console.log(`myMonthDataPoints: ${myMonthDataPoints}`)
+                const data = {
+                    labels: myMonth,
+                    datasets: [{
+                        label: '# of tasks created per month',
+                        data: myMonthDataPoints,
+                        fill: true,
+                        lineTension: 0.3, // Bezier curve 0-1
+                        backgroundColor: [
+                            'rgba(25, 135, 84, 0.4)',
+                            'rgba(220, 53, 69, 1)',
+                            'rgba(13, 110, 253, 1)',
+                            'rgba(255, 193, 7, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(0, 0, 0, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(25, 135, 84, 1)',
+                            'rgba(220, 53, 69, 1)',
+                            'rgba(13, 110, 253, 1)',
+                            'rgba(255, 193, 7, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(0, 0, 0, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                };
+
+                // config
+                const config = {
+                    type: 'line',
+                    data,
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                align: 'top',
+                            }
+                        },
+                        layout: {
+                            padding: {
+                                top: 25,
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    stepSize: 1
+                                },
+                                min:  myMonthDataPoints.reduce(function (a, b) {
+                    return Math.min(a, b);}, 1),
+                                max: myMonthDataPoints.reduce(function (a, b) {
+                    return Math.max(a, b);}, 0),
+                            },
+                            x: {
+                                min: myMonth.length - 6, // most recent month minus 6 months
+                                max: myMonth.length - 1, // show most recent month in most right position
+                            }
+                        }
+                    }
+                };
+
+                // render init block
+                const myChart1 = new Chart(
+                    document.getElementById('myChart1'),
+                    config
+                );
+                // Y axis is equal to max number of tasks
+                var max_task_number = myMonthDataPoints.reduce(function (a, b) {
+                    return Math.max(a, b);
+                }, 0);
+
+                var min_task_number = myMonthDataPoints.reduce(function (a, b) {
+                    return Math.min(a, b);
+                }, 1);
+
+                function nextData(start, end) {
+                    const startScale = myChart1.config.options.scales.x.min + start;
+                    const endScale = myChart1.config.options.scales.x.max + end;
+
+                    // position by default
+                    myChart1.config.options.scales.x.min = startScale;
+                    myChart1.config.options.scales.x.max = endScale;
+                    myChart1.config.options.scales.y.max = max_task_number;
+                    myChart1.config.options.scales.y.min = min_task_number;
+                    document.getElementById('previous').disabled = false;
+                    document.getElementById('next').disabled = false;
+
+                    if (startScale <= 0) {
+                        myChart1.config.options.scales.x.min = 0;
+                        myChart1.config.options.scales.x.max = 5;
+                        myChart1.config.options.scales.y.max = max_task_number;
+                        myChart1.config.options.scales.y.min = min_task_number;
+                        document.getElementById('previous').disabled = true;
+                    }
+                    ;
+
+                    if (endScale >= myMonth.length - 1) {
+                        myChart1.config.options.scales.x.min = myMonth.length - 6;
+                        myChart1.config.options.scales.x.max = myMonth.length - 1;
+                        myChart1.config.options.scales.y.max = max_task_number;
+                        myChart1.config.options.scales.y.min = min_task_number;
+                        document.getElementById('next').disabled = true;
+                    }
+                    ;
+
+                    myChart1.update();
+                }
+
+            </script>
+
+
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% extends 'main_app/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Create Task{% endblock title %}
+{% block content %}
+
+
+{% for user in assigned_to%}
+    <ul>
+        <li>{{ user }}</li>
+    </ul>
+{% endfor %}
+
+<p class="breadcrumb-item active">Create Task</p>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.media }}
+    {% crispy form %}
+</form>
+
+
+
+{% endblock content %}

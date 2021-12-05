@@ -1,0 +1,67 @@
+{% load static %}
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h4 id="offcanvasRightLabel">Creating a Company</h4>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+
+    <strong class="h6 fw-bold d-block">Why would I want to create a company?</strong>
+      <div class="fs-6 mb-4">Creating a company allows you to create new users and collaborate with them on your projects</div>
+
+    <strong class="h6 fw-bold d-block">What changes?</strong>
+      <div class="fs-6 mb-4">
+          You will have access to 2 new pages:
+          <ul>
+              <li>Manage Users</li>
+              <li>Manage Tasks</li>
+          </ul>
+          <div class="text-center">
+            <img src="{% static 'main_app/img/new_nav_links.png' %}" class="img-fluid img-thumbnail mt-2 border border-dark w-75"
+               alt="New pages image">
+          </div>
+      </div>
+
+      <strong class="h6 fw-bold d-block">How do I create a company?</strong>
+      <div class="fs-6 mb-4">
+          Once you click the "Create a company" link, you will be able to give it a name and a description (optional)
+          <div class="text-center">
+            <img src="{% static 'main_app/img/create_company.png' %}" class="img-fluid img-thumbnail mt-2 border border-dark w-75"
+               alt="New pages image">
+          </div>
+      </div>
+
+      <strong class="h6 fw-bold d-block">How do I add a new user?</strong>
+      <div class="fs-6 mb-4">
+          <ul>
+              <li>Go to Manage Users page</li>
+              <li>Click 'Add User' button
+                  <div class="text-center">
+                    <img src="{% static 'main_app/img/add_user.png' %}" class="img-fluid img-thumbnail my-2 border border-dark w-100"
+                       alt="New pages image">
+                  </div>
+              </li>
+              <li>Fill out the form with new credentials, they will be automatically added to your company</li>
+              <li>Done! New user can now log in using these credential</li>
+          </ul>
+          <span class="text-danger">Note: we strongly encourage the new user to change their password following the "Reset password" link in
+              user profile settings.</span>
+      </div>
+
+      <strong class="h6 fw-bold d-block">Do all users have the same privileges?</strong>
+      <div class="fs-6 mb-4">No. There are 2 account types:
+          <ul>
+              <li><strong>Admin</strong>. Has access to all company's information and activities</li>
+              <li><strong>Agent</strong>. Has access mostly to their own information and tasks only</li>
+          </ul>
+          <span class="text-muted">Note: Admin can change other users' account type at any time by going to their profile page</span>
+      </div>
+
+      <strong class="h6 fw-bold d-block">Can I change the name of or delete my company?</strong>
+      <div class="fs-6 mb-4">You can change your company's name by following the 'Update company's info' link in your profile settings.
+      You <strong>can't</strong> delete your company.</div>
+
+
+  </div>
+</div>

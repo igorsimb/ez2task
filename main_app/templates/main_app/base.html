@@ -1,0 +1,168 @@
+{% load static %}
+{% url 'main' as main_url %}
+{% url 'manage_users' as manage_users_url %}
+{% url 'manage_tasks' as manage_tasks_url %}
+{% url 'my_tasks' as my_tasks_url %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>EZ2 Task - {% block title %}{% endblock title %}</title>
+    <!-- Google action icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap 5.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+
+    <!-- Chart.js labels plugin for pie-chart -->
+    <script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
+
+    <!-- Chart.js datalabels plugin for line-chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="{% static 'main_app/assets/favicon.ico' %}"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'main_app/css/manage_users.css' %}" rel="stylesheet"/>
+    <link href="{% static 'main_app/css/styles.css' %}" rel="stylesheet"/>
+    <link href="{% static 'main_app/css/my_styles.css' %}" rel="stylesheet"/>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet">
+
+
+</head>
+<body>
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar-->
+    <div class="border-end bg-light" id="sidebar-wrapper">
+        <div class="sidebar-heading border-bottom bg-success position-relative">
+            <a class="link-light text-decoration-none stretched-link" href="{% url 'main' %}">
+                {% if request.user.company %}
+                    {{ request.user.company }}
+                {% else %}
+                    EZ2 Task
+                {% endif %}
+            </a>
+        </div>
+        <div class="list-group list-group-flush">
+            <a class="list-group-item list-group-item-action list-group-item-light p-3
+            {% if request.path == main_url %} active {% endif %}"
+               href="{{ main_url }}">
+                <i class="material-icons custom-material-icons text-secondary
+                {% if request.path == main_url %}text-light{% endif %}">home</i> Dashboard
+            </a>
+
+            {# Agents cannot Manage users and Manage Tasks #}
+            {% if not request.user.account_type == 'Agent' %}
+
+                <a class="list-group-item list-group-item-action list-group-item-light p-3
+                {% if request.path == manage_users_url %} active {% endif %}"
+                   href="{{ manage_users_url }}"><i class="material-icons custom-material-icons text-secondary
+    {% if request.path == manage_users_url %}text-light{% endif %}">supervisor_account</i> Manage Users</a>
+
+                <a class="list-group-item list-group-item-action list-group-item-light p-3
+                    {% if request.path == manage_tasks_url %} active {% endif %}"
+                   href="{{ manage_tasks_url }}">
+                    <i class="material-icons custom-material-icons text-secondary
+    {% if request.path == manage_tasks_url %}text-light{% endif %}">assignment</i> Manage Tasks
+                </a>
+            {% endif %}
+
+            <a class="list-group-item list-group-item-action list-group-item-light p-3
+                {% if request.path == my_tasks_url %} active {% endif %}"
+               href="{{ my_tasks_url }}">
+                <i class="material-icons custom-material-icons text-secondary
+{% if request.path == my_tasks_url %}text-light{% endif %}">assignment_ind</i> My Tasks
+            </a>
+
+        </div>
+    </div>
+    <!-- Page content wrapper, main site-->
+    <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom p-0">
+            <div class="container-fluid">
+                                <button class="btn btn-sm btn-primary custom-toggler" id="sidebarToggle">
+                                    Toggle Menu
+{#                                    <i class="material-icons" style="font-size:1rem">menu_open</i>#}
+                                </button>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+                </button>
+
+                {% if user.is_authenticated %}
+                    <span class="ps-2 fs-3">Welcome, <a class="text-decoration-none link-dark"
+                                                        href="{% url 'user_profile' request.user.slug %}">
+                        {% if request.user.first_name %}{{ request.user.first_name }}
+                            {% else %}{{ request.user.username }}
+                        {% endif %}</a>
+                    </span>
+                {% else %}
+                    <a href="{% url 'login' %}">Log in</a> |
+                    <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ request.user.image.url }}" alt="profile image"
+                                     class="img-fluid rounded-circle" style="max-width:35px; max-height:35px">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'user_profile' request.user.slug %}">Profile</a>
+                                <a class="dropdown-item" href="{% url 'user_update' request.user.slug %}">Settings</a>
+                                {% if not request.user.company %}
+                                    <a class="dropdown-item" href="{% url 'company_create' %}">Create a company</a>
+                                {% endif %}
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container-fluid">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %} {% endblock %}
+
+
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ"
+        crossorigin="anonymous"></script>
+
+
+<!-- Core theme JS-->
+<script src="{% static 'main_app/js/scripts.js' %}"></script>
+<script src="{% static 'main_app/js/myScript.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% extends 'main_app/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Update Task{% endblock title %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Update Task "{{ item.title }}"</li>
+  </ol>
+</nav>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.media }}
+    {% crispy form %}
+</form>
+
+{% endblock content %}

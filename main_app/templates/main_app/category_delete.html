@@ -1,0 +1,15 @@
+{% extends 'main_app/base.html' %}
+{% block title %}Delete Project{% endblock title %}
+{% block content %}
+
+<p class="breadcrumb-item active">Delete Project</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <h2>Are you sure you want to delete "{{ category.category_title }}"?</h2>
+    <h5>If you have any tasks in this project, they will be <strong>deleted forever</strong>.</h5>
+    <button class="btn btn-danger mt-2" type="submit">Yes, Delete</button>
+    <button type="button" class="btn btn-outline-secondary mt-2" onclick="history.back()">Cancel</button>
+</form>
+
+{% endblock content %}

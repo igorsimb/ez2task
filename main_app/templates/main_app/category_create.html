@@ -1,0 +1,14 @@
+{% extends 'main_app/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Create Project{% endblock title %}
+{% block content %}
+
+<p class="breadcrumb-item active">Create Project</p>
+
+<form method="POST" autocomplete="off">
+    {% csrf_token %}
+    {% crispy form helper %}
+</form>
+
+
+{% endblock content %}

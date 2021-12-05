@@ -1,0 +1,225 @@
+{% extends 'main_app/base.html' %}
+{% block title %}{{ user }}'s Profile{% endblock title %}
+{% block content %}
+
+<div id="app" v-cloak>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">{{ user }}'s Profile Overview</li>
+        </ol>
+    </nav>
+
+    <!-- User profile header -->
+    <div class="d-flex justify-content-center">
+        <div class="d-flex align-items-center flex-column">
+            <img src="{{ user.image.url }}" alt="profile image" class="img-thumbnail img-fluid rounded-circle"
+                 style="max-width:150px">
+            <h2 class="account-heading">
+                {% if user.first_name and user.last_name %}
+                    {{ user.first_name }} {{ user.last_name }}
+                {% else %}
+                    {{ user.username|capfirst }}
+                {% endif %}
+
+            </h2>
+            <div class="text-muted">{{ user.email }}</div>
+            {% if request.user.company %}
+                <div class="text-muted">{{ user.account_type }} @{{ user.company }}</div>
+            {% endif %}
+
+            <div class="btn-group d-inline mt-2">
+                <a href="#" class="btn btn-sm btn-outline-success active">Overview</a>
+                <a href="{% url 'user_update' user.slug %}" class="btn btn-sm btn-outline-success">Settings</a>
+
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <!-- Information cards -->
+    <div class="row">
+
+        <!-- Created/Assigned Tasks card -->
+        <div class="col-xl-3 col-md-6 mb-4 text-center">
+            <div class="card bg-light bg-gradient shadow h-100 py-2 border-secondary">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="h5 mb-0 font-weight-bold text-dark">
+                                <i class="material-icons custom-material-icons text-secondary">assignment</i> {{ tasks.count }}
+                            </div>
+                            <div class="text-xs font-weight-bold text-dark mb-1">
+                                Created/Assigned to Tasks
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ongoing Tasks card -->
+        <div class="col-xl-3 col-md-6 mb-4 text-center">
+            <div class="card bg-light bg-gradient shadow h-100 py-2 border-secondary">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="h5 mb-0 font-weight-bold text-dark">
+                                <i class="material-icons custom-material-icons text-secondary">update</i> {{ tasks_ongoing.count }}
+                            </div>
+                            <div class="text-xs font-weight-bold text-dark mb-1">
+                                Ongoing Tasks
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complete Tasks card -->
+        <div class="col-xl-3 col-md-6 mb-4 text-center">
+            <div class="card bg-light bg-gradient shadow h-100 py-2 border-secondary">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="h5 mb-0 font-weight-bold text-dark">
+                                <i class="material-icons custom-material-icons text-secondary">assignment_turned_in</i> {{ tasks_complete.count }}
+                            </div>
+                            <div class="text-xs font-weight-bold text-dark mb-1">
+                                Complete Tasks
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overdue Tasks card -->
+        <div class="col-xl-3 col-md-6 mb-4 text-center">
+            <div class="card bg-light bg-gradient shadow h-100 py-2 border-secondary">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="h5 mb-0 font-weight-bold text-dark">
+                                <i class="material-icons custom-material-icons text-secondary">assignment_late</i> {{ tasks_overdue.count }}
+                            </div>
+                            <div class="text-xs font-weight-bold text-dark mb-1">
+                                Overdue tasks
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if user.company %}
+        <h5 class="mb-4">
+            Tasks assigned to or created by
+            {% if request.user.slug == user.slug %}
+                me
+            {% else %}
+                {{ user }}
+            {% endif %}
+        </h5>
+    {% else %}
+        <h3 class="text-center mb-4">My tasks</h3>
+    {% endif %}
+
+{% if tasks %}
+    <div class="form-check mb-2">
+      <input @click="toggleComplete" class="form-check-input" type="checkbox" value="" id="completeCheck">
+      <label class="form-check-label" for="completeCheck">
+          <small>Show Complete</small>
+      </label>
+    </div>
+{% endif %}
+
+    <div class="row gx-5">
+        {% for category in category_list %}
+            <div class="col border-danger mb-3" style="max-width: 24rem;">
+                <div class="card bg-gradient shadow" style="background-color: #dadadf">
+                    <h5 class="text-center my-2 card-title">
+                        {{ category.category_title }}
+                    </h5>
+                    {% for task in tasks %}
+
+                        {% if task.category == category %}
+                            <div {% if task.complete %}v-if="isVisible"{% endif %} class="{% if task.complete %}fade-in{% endif %} d-flex justify-content-between mx-1 px-1 my-1
+                border rounded shadow-sm flex-fill task_div
+                {% if task.priority == 'High' %}border-danger border-4 border-top-0 border-bottom-0 border-end-0{% endif %}">
+
+                                {# transform needed so stretch link only applies to this div #}
+                                <div class="w-100 p-2" style="transform: rotate(0);">
+                                    <a class="text-decoration-none link-dark stretched-link"
+                                       href="{% url 'detail' task.id %}">{{ task.title }}</a>
+                                    <br>
+                                    {% if task.complete %}
+                                        <div class="badge rounded-pill text-dark badgeOpacity mt-2"
+                                             style="background: rgba(108, 117, 125, 0.3)">Completed
+                                        </div>
+                                    {% elif task.deadline_date_time < timeout %}
+                                        <div class="badge rounded-pill bg-danger badgeOpacity">
+                                            - {{ task.deadline_date_time|timesince }}</div>
+                                    {% else %}
+                                        <div class="badge rounded-pill text-dark fw-normal border border-secondary mt-2">{{ task.deadline_date_time }}</div>
+                                    {% endif %}
+                                </div>
+
+                                    <div>
+                                        <a href="{% url 'update' task.id %}?next={% url 'user_profile' user.slug %}" title="Edit Task">
+                                            <i class="material-icons link-secondary" style="font-size:0.85rem">mode_edit</i>
+                                        </a>
+                                    </div>
+
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+<!-- Vuejs3-->
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+    let app = Vue.createApp({
+        data: function() {
+            return {
+                greeting: 'Hello Vue 3!',
+                isVisible: false,
+            }
+        },
+        methods: {
+            toggleComplete() {
+                this.isVisible = !this.isVisible;
+            }
+        }
+    })
+    app.mount('#app')
+</script>
+<script>
+    /* This negates strange Chrome behavior
+    History back keeps checkbox checked,  while not showing the required content for this state
+    Firefox works as intended.*/
+    var isChrome = !!window.chrome
+    onload  = () => {
+    if (isChrome) {
+        document.getElementById('completeCheck').checked= false;
+    }
+};
+</script>
+</div>
+{% endblock content %}
