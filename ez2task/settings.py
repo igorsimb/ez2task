@@ -23,8 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
+DEPLOYED = True
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if DEPLOYED:
+    DEBUG = os.getenv('DEBUG')
+else:
+    DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'ez2task.herokuapp.com', 'ez2task.com']
 
@@ -82,7 +88,7 @@ WSGI_APPLICATION = 'ez2task.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DEPLOYED = True
+
 
 if DEPLOYED:
     DATABASES = {
