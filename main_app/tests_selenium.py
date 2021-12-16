@@ -122,7 +122,7 @@ class TestDemoUserFunctionality(StaticLiveServerTestCase):
         self.assertFalse(button)
 
     def test_comment_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/detail/2/')
+        self.browser.get('http://localhost:8000/detail/3/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'comment_submit_button').is_enabled()
         print('***Comment button disabled test...***')
@@ -136,14 +136,14 @@ class TestDemoUserFunctionality(StaticLiveServerTestCase):
         self.assertFalse(button)
 
     def test_task_delete_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/detail/2/')
+        self.browser.get('http://localhost:8000/detail/3/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'task_delete_submit_button').is_enabled()
         print('***Task Delete button disabled test...***')
         self.assertIn('btn btn-sm btn-danger mt-3 disabled', self.browser.page_source)
 
     def test_task_update_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/update/2/')
+        self.browser.get('http://localhost:8000/detail/3/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'task_update_submit_button').is_enabled()
         print('***Task Update button disabled test...***')
@@ -288,7 +288,7 @@ class TestNonDemoUserFunctionality(StaticLiveServerTestCase):
         self.assertTrue(button)
 
     def test_comment_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/detail/2/')
+        self.browser.get('http://localhost:8000/detail/3/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'comment_submit_button').is_enabled()
         print('***Comment button disabled test...***')
@@ -302,14 +302,14 @@ class TestNonDemoUserFunctionality(StaticLiveServerTestCase):
         self.assertTrue(button)
 
     def test_task_delete_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/detail/2/')
+        self.browser.get('http://localhost:8000/detail/3/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'task_delete_submit_button').is_enabled()
         print('***Task Delete button disabled test...***')
         self.assertNotIn('btn btn-sm btn-danger mt-3 disabled', self.browser.page_source)
 
     def test_task_update_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/update/2/')
+        self.browser.get('http://localhost:8000/detail/3/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'task_update_submit_button').is_enabled()
         print('***Task Update button disabled test...***')

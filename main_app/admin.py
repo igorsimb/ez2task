@@ -6,6 +6,7 @@ from .models import Item, Category, Comment
 class CustomItemAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'get_author_company', 'date_posted')
     list_editable = ('date_posted',)
+    readonly_fields = ('id',)
 
     @display(ordering='author__company', description='Author Company')
     def get_author_company(self, obj):

@@ -67,6 +67,7 @@ class UserUpdateForm(forms.ModelForm):
             FloatingField('last_name'))
 
 
+
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = User

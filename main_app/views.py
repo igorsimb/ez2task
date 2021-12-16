@@ -376,9 +376,10 @@ class ItemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     # Allow deleting task only to admin, author and the assigned-to person.
     def test_func(self):
         item = self.get_object()
-        if self.request.user == item.author or \
+        if (self.request.user == item.author or \
                 self.request.user in item.assigned_to.all() or \
-                self.request.user.is_admin:
+                self.request.user.is_admin) and \
+                not self.request.user.username == 'demo_user':
             return True
         return False
 
@@ -457,7 +458,8 @@ class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     # Admins from the same company; if no company, user that created the Category (aka Project)
     def test_func(self):
         if self.request.user.account_type == 'Admin' and \
-                self.request.user.company.id == self.get_object().category_author.company.id:
+                self.request.user.company.id == self.get_object().category_author.company.id and \
+                not self.request.user.username == 'demo_user':
             return True
         elif not self.request.user.company and self.request.user.id == self.get_object().category_author.id:
             return True
