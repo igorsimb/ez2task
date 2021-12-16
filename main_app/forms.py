@@ -39,7 +39,7 @@ class ItemCreateForm(forms.ModelForm):
         self.helper.layout = Layout(
 
             FloatingField('category'),
-            FloatingField('title'),
+            FloatingField('title', id='item_create_title_field'),
             Field('description'),
             Field('assigned_to'),
             FloatingField('priority', wrapper_class='w-25'),
