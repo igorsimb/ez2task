@@ -29,7 +29,7 @@ background-repeat: no-repeat;background-size: cover; background-attachment: fixe
                     {{ form|crispy }}
 
                     <div class="d-flex align-items-end">
-                        <button class="btn btn-primary mt-2" type="submit">Log in</button>
+                        <button class="btn btn-primary mt-2" id="login_button" type="submit">Log in</button>
                         <small class="mt-3">
                             <a class="ms-2 link-secondary" href="{% url 'password_reset' %}">Forgot Password?</a>
                         </small>

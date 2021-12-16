@@ -45,7 +45,9 @@ class ItemCreateForm(forms.ModelForm):
             FloatingField('priority', wrapper_class='w-25'),
             FloatingField('deadline_date', wrapper_class='w-25'),
             FloatingField('deadline_time', wrapper_class='w-25'),
-            HTML('<button class="btn btn-success mb-2" type="submit">Create</button>'
+            HTML('<button id="task_create_button" class="btn btn-success mb-2"'
+                 '{% if request.user.username == "demo_user" %} disabled {% endif %}'
+                 ' type="submit">Create</button>'
                  '<button type="button" class="btn btn-outline-danger mb-2 ms-2" onclick="history.back('
                  ')">Cancel</button>'),
         )
@@ -93,7 +95,9 @@ class ItemUpdateForm(forms.ModelForm):
             FloatingField('deadline_date', wrapper_class='w-25'),
             FloatingField('deadline_time', wrapper_class='w-25'),
             'complete',
-            HTML('<button class="btn btn-success mb-2" type="submit">Update</button>'
+            HTML('<button id="task_update_submit_button" class="btn btn-success mb-2" '
+                 '{% if request.user.username == "demo_user" %} disabled {% endif %}'
+                 'type="submit">Update</button>'
                  '<button type="button" class="btn btn-outline-danger mb-2 ms-2" onclick="history.back('
                  ')">Cancel</button>'),
         )

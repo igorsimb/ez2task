@@ -104,11 +104,14 @@
                 </button>
 
                 {% if user.is_authenticated %}
-                    <span class="ps-2 fs-3">Welcome, <a class="text-decoration-none link-dark"
+                    <span class="ps-2 fs-3">Welcome, <a id="user_name_link" class="text-decoration-none link-dark"
                                                         href="{% url 'user_profile' request.user.slug %}">
                         {% if request.user.first_name %}{{ request.user.first_name }}
                             {% else %}{{ request.user.username }}
                         {% endif %}</a>
+                    {% if request.user.username == 'demo_user' %}
+                        <small class="text-danger">(demo accounts have limited functionality)</small>
+                    {% endif %}
                     </span>
                 {% else %}
                     <a href="{% url 'login' %}">Log in</a> |

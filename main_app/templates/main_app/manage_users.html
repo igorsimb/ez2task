@@ -63,7 +63,9 @@
                             <i class="material-icons m-0">mode_edit</i>
                         </a>
                         {% if not request.user == user and request.user.account_type == 'Admin' %} {# user cannot delete themself #}
-                            <a href="{% url 'user_delete' user.slug %}" title="Delete">
+                            <a id="user_delete_link"
+                               {% if request.user.username == "demo_user" %}class='m-0 p-0 btn d-inline disabled' {% endif %}
+                               href="{% url 'user_delete' user.slug %}" title="Delete">
                                 <i class="material-icons text-danger m-0">delete_forever</i>
                             </a>
                         {% endif %}
@@ -90,7 +92,9 @@
                             <i class="material-icons m-0">mode_edit</i>
                         </a>
 
-                        <a href="{% url 'user_delete' user.slug %}" title="Delete">
+                        <a id="user_delete_link"
+                           {% if request.user.username == "demo_user" %}class='m-0 p-0 btn d-inline disabled' {% endif %}
+                           href="{% url 'user_delete' user.slug %}" title="Delete">
                             <i class="material-icons text-danger m-0">delete_forever</i>
                         </a>
 

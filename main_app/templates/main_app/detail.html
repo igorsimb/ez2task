@@ -20,7 +20,7 @@
                     ?next = page that user came from.
                     Source: https://docs.djangoproject.com/en/3.2/ref/request-response/#django.http.HttpRequest.META
                 {% endcomment %}
-                <a class="btn btn-sm btn-danger mt-3"
+                <a id="task_delete_submit_button" class="btn btn-sm btn-danger mt-3 {% if request.user.username == "demo_user" %}disabled{% endif %}"
                    href="{% url 'delete' items.pk %}?next={{ request.META.HTTP_REFERER }}">Delete Task</a>
             </div>
         </div>
@@ -115,7 +115,8 @@
             <div class="form-group w-50 mt-3">
                 {{ form.content }}
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-success mt-2">Comment</button>
+                    <button id="comment_submit_button" type="submit" class="btn btn-success mt-2"
+                    {% if request.user.username == "demo_user" %} disabled {% endif %}>Comment</button>
                 </div>
             </div>
         </form>

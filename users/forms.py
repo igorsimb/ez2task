@@ -85,6 +85,8 @@ class UserCreateForm(UserCreationForm):
             FloatingField('account_type'),
             FloatingField('password1'),
             FloatingField('password2'),
-            HTML('<button class="btn btn-success" type="submit">Add</button>'
+            HTML('<button class="btn btn-success" id="user_create_button"'
+                 '{% if request.user.username == "demo_user" %} disabled {% endif %}'
+                 ' type="submit">Add</button>'
                  '<a href="{% url "manage_users" %}"class="btn btn-danger ms-2">Cancel</a>'),
         )

@@ -61,7 +61,9 @@
                                         <div class="invisible" style="display: none">{{ form.account_type|as_crispy_field }}</div>
                                     {% endif %}
 
-                                    <input class="btn btn-outline-success mt-2" type="submit" value="Update">
+                                    <input id="user_update_submit_button" class="btn btn-outline-success mt-2"
+                                           {% if request.user.username == "demo_user" %} disabled {% endif %}
+                                           type="submit" value="Update">
                                 </fieldset>
                                 </form>
                             </div>
@@ -90,7 +92,7 @@
         <!-- Only admins can change company name and only from their own account settings -->
         {% if request.user.account_type == 'Admin' and request.user.slug == user.slug %}
                 <span class="ms-2">
-                    <a href="{% url 'company_update' request.user.company.pk %}?next={% url 'user_update' request.user.slug %}" class="link-secondary">Update company's info</a>
+                    <a id="update_company_info_link" href="{% url 'company_update' request.user.company.pk %}?next={% url 'user_update' request.user.slug %}" class="link-secondary">Update company's info</a>
                 </span>
 {#            TODO: change stingformat to slug (info on stringformat: https://docs.djangoproject.com/en/3.2/ref/templates/builtins/#stringformat #}
 

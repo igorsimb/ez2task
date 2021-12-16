@@ -427,7 +427,10 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
 
             FloatingField('category_title', autofocus='autofocus', autocomplete=False),
             FloatingField('category_description', style='min-height:15rem'),
-            HTML('<input class="btn btn-outline-success mt-2" type="submit" value="Add Project">'
+            HTML('<input id="category_create_button"'
+                 '{% if request.user.username == "demo_user" %} disabled{% endif %}'
+                 ' class="btn btn-outline-success mt-2" type="submit" value="Add '
+                 'Project">'
                  '<button type="button" class="btn btn-outline-danger mt-2 ms-2" onclick="history.back('
                  ')">Cancel</button>'),
         )
@@ -499,10 +502,13 @@ class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
             FloatingField('category_title', autofocus='autofocus', autocomplete=False),
             FloatingField('category_description', style='min-height:15rem'),
-            HTML('<input class="btn btn-outline-success mt-2" type="submit" value="Update">'
+            HTML('<input id="category_update_submit_button" class="btn btn-outline-success mt-2"'
+                 '{% if request.user.username == "demo_user" %} disabled {% endif %} type="submit" '
+                 'value="Update">'
                  '<button type="button" class="btn btn-outline-danger mt-2 mx-2" onclick="history.back('
                  ')">Cancel</button><br>'
-                 '<a href="{% url "category_delete" category.id %}" class="btn btn-danger mt-2">Delete Project</a>'),
+                 '<a id="category_delete_submit_button" href="{% url "category_delete" category.id %}" '
+                 'class="btn btn-danger mt-2{% if request.user.username == "demo_user" %} disabled{% endif %}">Delete Project</a>'),
         )
 
 

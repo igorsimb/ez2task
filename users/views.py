@@ -150,7 +150,8 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         # user must be Admin and cannot delete themself via direct link
-        if self.request.user.account_type == 'Admin' and not self.request.user.slug == self.kwargs['slug']:
+        if self.request.user.account_type == 'Admin' and not self.request.user.slug == self.kwargs['slug'] and \
+                not self.request.user.username == 'demo_user':
             return True
         else:
             return False

@@ -16,8 +16,10 @@
 <form method="POST" autocomplete="off">
     {% csrf_token %}
     {{ form|crispy }}
-    <input class="btn btn-outline-success mt-2" type="submit" value="Update">
-    <button type="button" class="btn btn-outline-danger mt-2" onclick="history.back()">Cancel</button>
+    <input id="company_update_submit_button" class="btn btn-outline-success mt-2"
+           {% if request.user.username == "demo_user" %} disabled {% endif %}
+           type="submit" value="Update">
+    <button  type="button" class="btn btn-outline-danger mt-2" onclick="history.back()">Cancel</button>
 </form>
 
 
