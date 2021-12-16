@@ -1,3 +1,5 @@
+import os
+
 from django.test import TestCase
 import pytest
 from selenium import webdriver
@@ -5,7 +7,8 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from time import sleep
-
+from dotenv import load_dotenv
+load_dotenv()
 
 class TestDemoUserFunctionality(StaticLiveServerTestCase):
 
@@ -37,9 +40,8 @@ class TestDemoUserFunctionality(StaticLiveServerTestCase):
         cls.browser.implicitly_wait(10)
 
         # change these to test different users
-        login_keys = 'demo@user.com'
-        # login_keys = 'my@gmail.com'
-        password_keys = 'testing321'
+        login_keys = str(os.getenv('LOGIN_DEMO_KEYS'))
+        password_keys = str(os.getenv('PASSWORD_DEMO_KEYS'))
 
         # cls.browser = webdriver.Chrome('chromedriver.exe')
         cls.browser.get('http://localhost:8000')
@@ -200,8 +202,12 @@ class TestNonDemoUserFunctionality(StaticLiveServerTestCase):
 
         # change these to test different users
         # login_keys = 'demo@user.com'
-        login_keys = 'my@gmail.com'
-        password_keys = 'testing321'
+        # login_keys = 'my@gmail.com'
+        # password_keys = 'testing321'
+
+        # change these to test different users
+        login_keys = str(os.getenv('LOGIN_NON_DEMO_KEYS'))
+        password_keys = str(os.getenv('PASSWORD_NON_DEMO_KEYS'))
 
         # cls.browser = webdriver.Chrome('chromedriver.exe')
         cls.browser.get('http://localhost:8000')

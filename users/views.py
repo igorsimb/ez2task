@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from django.http import Http404
 from django.urls import reverse_lazy
@@ -8,6 +9,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.generic import UpdateView, CreateView, DeleteView, DetailView
 from django.contrib.auth import login, authenticate, logout
+from dotenv import load_dotenv
+load_dotenv()
 
 from main_app.models import Category, Item
 from .models import User
@@ -41,6 +44,10 @@ def logout_view(request):
     logout(request)
     return redirect('main')
 
+def demo_user_login_view(request):
+    demo_user = authenticate(email=str(os.getenv('LOGIN_DEMO_KEYS')), password=str(os.getenv('PASSWORD_DEMO_KEYS')))
+    login(request, demo_user)
+    return redirect('main')
 
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = User

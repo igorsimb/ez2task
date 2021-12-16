@@ -32,9 +32,9 @@ class IndexView(LoginRequiredMixin, TemplateView):
         context['now'] = datetime.datetime.now()
         context['threshold'] = datetime.datetime.now() + datetime.timedelta(hours=24)
 
-        # ADMIN
-        if not self.request.user.company and self.request.user.account_type == 'Admin':
-            context['tasks'] = Item.objects.filter(author__company__name__exact=self.request.user.company.name)
+        # ADMIN w/ company
+        if self.request.user.company and self.request.user.account_type == 'Admin':
+            context['tasks'] = Item.objects.filter(author__company=self.request.user.company)
             context['tasks_completed'] = Item.objects.filter(Q(
                 author__company__name__exact=self.request.user.company.name) & Q(
                 complete=True))

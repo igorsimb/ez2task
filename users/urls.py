@@ -3,6 +3,7 @@ from django.urls import path
 from users.views import (
     registration_view,
     logout_view,
+    demo_user_login_view,
     UserUpdateView,
     UserCreateView,
     UserDeleteView,
@@ -19,6 +20,7 @@ urlpatterns = [
     path('login/',
          auth_views.LoginView.as_view(template_name='users/login.html', redirect_authenticated_user=True),
          name='login'),
+    path('demo_login/', demo_user_login_view, name='demo_login'),
     path('logout/', logout_view, name='logout'),
 
     path('user-update/<slug:slug>/', UserUpdateView.as_view(), name='user_update'),
