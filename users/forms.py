@@ -71,7 +71,7 @@ class UserUpdateForm(forms.ModelForm):
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'username', 'account_type', 'password1', 'password2')
+        fields = ('email', 'username', 'first_name', 'last_name', 'account_type', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -83,6 +83,8 @@ class UserCreateForm(UserCreationForm):
 
             FloatingField('email', autofocus='autofocus', autocomplete=False),
             FloatingField('username'),
+            FloatingField('first_name'),
+            FloatingField('last_name'),
             FloatingField('account_type'),
             FloatingField('password1'),
             FloatingField('password2'),
