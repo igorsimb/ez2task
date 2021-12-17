@@ -7,41 +7,41 @@ EZ2Task is a project management application that supports groups of users workin
 <table>
   <tr>
     <td align="center">
-      <a href="https://c2.staticflickr.com/8/7836/33297801958_8c403afca8_o.png" target="_blank" title="Project Dashboard">
-        <img src="https://c2.staticflickr.com/8/7836/33297801958_c3958e94ba_n.jpg" alt="Project Dashboard">
+      <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen1.png?raw=true" target="_blank" title="Dashboard">
+        <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen1.png?raw=true" alt="Dashboard">
       </a>
       <br />
-      <em>Project Dashboard</em>
+      <em>Dashboard</em>
     </td>
     <td  align ="center">
-      <a href="https://c2.staticflickr.com/8/7918/47173080821_3352d05e2b_o.png" target="_blank" title="Ticket Dashboard">
-        <img src="https://c2.staticflickr.com/8/7918/47173080821_f6c092822e_n.jpg" alt="Ticket Dashboard">
+      <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen2.png?raw=true" target="_blank" title="Manage Users">
+        <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen2.png?raw=true" alt="Manage Users">
       </a>
       <br />
-      <em>Ticket Dashboard</em>
+      <em>Manage Users</em>
     </td>
     <td align="center">
-    <a href="https://c2.staticflickr.com/8/7868/46259674665_52e5d9ec03_o.png" target="_blank" title="Kanban Board">
-      <img src="https://c2.staticflickr.com/8/7868/46259674665_c80a0c15a7_n.jpg" alt="Kanban Board">
+    <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen3.png?raw=true" target="_blank" title="Manage Tasks">
+      <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen3.png?raw=true" alt="Manage Tasks">
     </a>
       <br />
-      <em>Kanban Board</em>
+      <em>Manage Tasks</em>
     </td>
   </tr>
   <tr>
     <td align="center">
-    <a href="https://c2.staticflickr.com/8/7874/46259716315_bd4269858d_o.png" target="_blank" title="Task View">
-        <img src="https://c2.staticflickr.com/8/7874/46259716315_44047af85e_n.jpg" alt="Task View">
+    <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen5.png?raw=true" target="_blank" title="Task Screen">
+        <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen5.png?raw=true" alt="Task Screen">
       </a>
       <br />
-      <em>Task View</em>
+      <em>Task Screen</em>
     </td>
     <td align="center">
-      <a href="https://c2.staticflickr.com/8/7896/47173858441_f2395a1b7d_o.png" target="_blank" title="Members">
-        <img src="https://c2.staticflickr.com/8/7896/47173858441_3b4c77990f_n.jpg" alt="Members">
+      <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen4.png?raw=true" target="_blank" title="User Profile">
+        <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen4.png?raw=true" alt="User Profile">
       </a>
       <br />
-      <em>Members</em>
+      <em>User Profile</em>
     </td>
     <td align="center">
       <a href="https://c2.staticflickr.com/8/7862/40209055153_0a16241b1b_o.png" target="_blank" title="Settings">
