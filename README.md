@@ -37,18 +37,18 @@ EZ2Task is a project management application that supports groups of users workin
       <em>Task Screen</em>
     </td>
     <td align="center">
+      <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen4.png?raw=true" target="_blank" title="Create/Update Task">
+        <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen4.png?raw=true" alt="Create/Update Task">
+      </a>
+      <br />
+      <em>Create/Update Task</em>
+    </td>
+    <td align="center">
       <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen4.png?raw=true" target="_blank" title="User Profile">
         <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen4.png?raw=true" alt="User Profile">
       </a>
       <br />
       <em>User Profile</em>
-    </td>
-    <td align="center">
-      <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen6.png?raw=true" target="_blank" title="User Settings">
-        <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen6.png?raw=true" alt="User Settings">
-      </a>
-      <br />
-      <em>User Settings</em>
     </td>
   </tr>
 </table>
