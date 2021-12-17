@@ -58,7 +58,7 @@
                                             {# transform needed so stretch link only applies to this div #}
                                             <div class="flex-fill p-2" style="transform: rotate(0)">
                                                 <a class="text-decoration-none link-dark stretched-link"
-                                                   href="{% url 'detail' item.id %}">{{ item.title }}</a>
+                                                   href="{% url 'detail' item.id %}" style="font-size:clamp(0.8rem, 0.9vw, 1.2rem)">{{ item.title }}</a>
                                                 <br>
                                                 {% if item.complete %}
                                                     <div class="badge rounded-pill text-dark badgeOpacity mt-2"
