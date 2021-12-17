@@ -19,6 +19,14 @@ class CommentAdmin(admin.ModelAdmin):
     list_editable = ('is_published',)
     list_filter = ('is_published', 'date_posted')
 
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('category_title', 'get_category_company', 'category_author')
+
+
+    @display(ordering='category_author__company')
+    def get_category_company(self, obj):
+        return obj.category_author.company
+
 admin.site.register(Item, CustomItemAdmin)
-admin.site.register(Category)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Comment, CommentAdmin)
