@@ -44,11 +44,11 @@ EZ2Task is a project management application that supports groups of users workin
       <em>User Profile</em>
     </td>
     <td align="center">
-      <a href="https://c2.staticflickr.com/8/7862/40209055153_0a16241b1b_o.png" target="_blank" title="Settings">
-        <img src="https://c2.staticflickr.com/8/7862/40209055153_54a427e593_n.jpg" alt="Settings">
+      <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen6.png?raw=true" target="_blank" title="User Settings">
+        <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen6.png?raw=true" alt="User Settings">
       </a>
       <br />
-      <em>Settings</em>
+      <em>User Settings</em>
     </td>
   </tr>
 </table>
@@ -65,11 +65,11 @@ EZ2Task provides a set of Project Management and online collaboration methods.
   * Dashboard
 
 ## Technology used
-* Python
-* Django
-* Bootstrap 5
-* VueJS 3
-* ChartJS
-* ListJS
-* CKEditor
-* PostgreSQL
+![Python](https://img.shields.io/badge/PYTHON-2b5b84?style=for-the-badge&logo=python&logoColor=f8d945)
+![Django](https://img.shields.io/badge/Django-004524?style=for-the-badge&logo=django&logoColor=white)
+![Bootstrap5](https://img.shields.io/badge/Bootstrap5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
+![VueJS3](https://img.shields.io/badge/Vue.JS-FBD502?style=for-the-badge&logo=Vue.js&logoColor=#4FC08D)
+![ChartJS](https://img.shields.io/badge/Chart.js-FBD502?style=for-the-badge&logo=Chart.js&logoColor=#4FC08D)
+![ListJS](https://img.shields.io/badge/list.js-FBD502?style=for-the-badge&logo=javascript&logoColor=black)
+![CKEditor](https://img.shields.io/badge/Ckeditor-0287D0?style=for-the-badge&logo=CKEditor4&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/postgresql-F5F5F5?style=for-the-badge&logo=postgresql&logoColor=black)
