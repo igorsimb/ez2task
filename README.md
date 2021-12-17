@@ -37,8 +37,8 @@ EZ2Task is a project management application that supports groups of users workin
       <em>Task Screen</em>
     </td>
     <td align="center">
-      <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen4.png?raw=true" target="_blank" title="Create/Update Task">
-        <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen4.png?raw=true" alt="Create/Update Task">
+      <a href="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen7.png?raw=true" target="_blank" title="Create/Update Task">
+        <img src="https://github.com/igorsimb/ez2task/blob/master/staticfiles/github_assets/ez2task_screen7.png?raw=true" alt="Create/Update Task">
       </a>
       <br />
       <em>Create/Update Task</em>
