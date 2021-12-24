@@ -1,3 +1,8 @@
+<meta name="title" property="og:title" content="EZ2Task" />
+<meta property="og:type" content="Website" />
+<meta name="image" property="og:image" content="https://github.com/igorsimb/igorsimb/raw/master/assets/EZ2TASK_thumbnail.jpg" />
+<meta name="description" property="og:description" content="A project management application that supports groups of users working on the same projects, as well as permission management system." />
+
 # Project Management application
 
 ## Introduction
