@@ -1,6 +1,6 @@
 import os
 
-from django.test import TestCase
+from django.test import TestCase, tag
 import pytest
 from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
@@ -122,28 +122,21 @@ class TestDemoUserFunctionality(StaticLiveServerTestCase):
         self.assertFalse(button)
 
     def test_comment_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/detail/3/')
+        self.browser.get('http://localhost:8000/detail/6/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'comment_submit_button').is_enabled()
         print('***Comment button disabled test...***')
         self.assertFalse(button)
 
-    # def test_task_update_button_is_disabled(self):
-    #     self.browser.get('http://localhost:8000/password-reset/')
-    #     sleep(3)
-    #     button = self.browser.find_element(By.ID, 'password_reset_submit_button').is_enabled()
-    #     print('***Category Create button disabled test...***')
-    #     self.assertFalse(button)
-
     def test_task_delete_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/detail/3/')
+        self.browser.get('http://localhost:8000/detail/6/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'task_delete_submit_button').is_enabled()
         print('***Task Delete button disabled test...***')
         self.assertIn('btn btn-sm btn-danger mt-3 disabled', self.browser.page_source)
 
     def test_task_update_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/update/3/')
+        self.browser.get('http://localhost:8000/update/6/')
         sleep(3)
         button = self.browser.find_element(By.ID, 'task_update_submit_button').is_enabled()
         print('***Task Update button disabled test...***')
@@ -156,14 +149,14 @@ class TestDemoUserFunctionality(StaticLiveServerTestCase):
         self.assertIn("m-0 p-0 btn d-inline disabled", self.browser.page_source)
 
     def test_category_update_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/category/update/1/')
+        self.browser.get('http://localhost:8000/category/update/6/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'category_update_submit_button').is_enabled()
         print('***Category Update button disabled test...***')
         self.assertFalse(button)
 
     def test_category_delete_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/category/update/1/')
+        self.browser.get('http://localhost:8000/category/update/6/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'category_delete_submit_button').is_enabled()
         print('***Category Delete button disabled test...***')
@@ -288,28 +281,21 @@ class TestNonDemoUserFunctionality(StaticLiveServerTestCase):
         self.assertTrue(button)
 
     def test_comment_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/detail/3/')
+        self.browser.get('http://localhost:8000/detail/6/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'comment_submit_button').is_enabled()
         print('***Comment button disabled test...***')
         self.assertTrue(button)
 
-    # def test_task_update_button_is_disabled(self):
-    #     self.browser.get('http://localhost:8000/password-reset/')
-    #     sleep(1)
-    #     button = self.browser.find_element(By.ID, 'password_reset_submit_button').is_enabled()
-    #     print('***Category Create button disabled test...***')
-    #     self.assertTrue(button)
-
     def test_task_delete_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/detail/3/')
+        self.browser.get('http://localhost:8000/detail/6/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'task_delete_submit_button').is_enabled()
         print('***Task Delete button disabled test...***')
         self.assertNotIn('btn btn-sm btn-danger mt-3 disabled', self.browser.page_source)
 
     def test_task_update_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/update/3/')
+        self.browser.get('http://localhost:8000/update/6/')
         sleep(3)
         button = self.browser.find_element(By.ID, 'task_update_submit_button').is_enabled()
         print('***Task Update button disabled test...***')
@@ -322,14 +308,14 @@ class TestNonDemoUserFunctionality(StaticLiveServerTestCase):
         self.assertNotIn("m-0 p-0 btn d-inline disabled", self.browser.page_source)
 
     def test_category_update_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/category/update/1/')
+        self.browser.get('http://localhost:8000/category/update/6/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'category_update_submit_button').is_enabled()
         print('***Category Update button disabled test...***')
         self.assertTrue(button)
 
     def test_category_delete_button_is_disabled(self):
-        self.browser.get('http://localhost:8000/category/update/1/')
+        self.browser.get('http://localhost:8000/category/update/6/')
         sleep(1)
         button = self.browser.find_element(By.ID, 'category_delete_submit_button').is_enabled()
         print('***Category Delete button disabled test...***')

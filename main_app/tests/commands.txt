@@ -1,0 +1,3 @@
+python manage.py test (run all tests)
+python manage.py test --tag=unit (run only unittests)
+python manage.py test --exclude-tag=unit (run all but unittests)
