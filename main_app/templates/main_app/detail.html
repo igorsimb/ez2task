@@ -100,8 +100,10 @@
                                 </div>
                             </div>
                             {% if request.user.account_type == 'Admin' or not request.user.company %}
+                                {% if not request.user.username == 'demo_user' %}
                                 <div class="hideMe"><a class="btn btn-close"
                                                        href="{% url 'comment_delete' comment.pk %}"></a></div>
+                                {% endif %}
                             {% endif %}
                         </div>
                     {% endif %}

@@ -19,7 +19,7 @@ from users.models import User, Company
 from .models import Item, Category, Comment
 from .forms import ItemCreateForm, ItemUpdateForm, CommentForm
 
-
+# Dashboard
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'main_app/main.html'
 
@@ -162,7 +162,7 @@ class ManageUsersView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     def handle_no_permission(self):
         return redirect('main')
 
-
+# Manage Tasks
 class ItemListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Item
     template_name = 'main_app/manage_tasks.html'
@@ -397,6 +397,7 @@ class ItemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return '/'
 
 
+# Create Project
 class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
     fields = ['category_title', 'category_description']
@@ -568,7 +569,8 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return reverse_lazy('detail', kwargs={'pk': self.object.item.id})
 
     def test_func(self):
-        if self.request.user.account_type == 'Admin' or not self.request.user.company:
+        if (self.request.user.account_type == 'Admin' or not self.request.user.company) and \
+                not self.request.user.username == 'demo_user':
             return True
         else:
             return False
