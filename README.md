@@ -58,7 +58,7 @@ EZ2Task is a project management application that supports groups of users workin
   </tr>
 </table>
 
-## Check it out at: [ez2task.com](https://ez2task.com/)
+## Live Demo at: [ez2task.com](https://ez2task.com/)
 
 ## Features
 EZ2Task provides a set of Project Management and online collaboration methods.
