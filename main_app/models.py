@@ -7,7 +7,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 User = user_model()
 
-
+# aka Project
 class Category(models.Model):
     category_title = models.CharField('Project Name', max_length=50, help_text='No more than 50 characters')
     category_description = models.TextField('Project Description', blank=True, null=True)

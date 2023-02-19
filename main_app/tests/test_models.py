@@ -1,6 +1,3 @@
-from unittest import skip
-
-import pytest
 from django.test import TestCase, tag
 
 from main_app.models import Item, Category, Comment

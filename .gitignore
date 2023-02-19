@@ -1,3 +1,5 @@
+.pytest_cache
+
 ### OSX ###
 .DS_Store
 .AppleDouble

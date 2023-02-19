@@ -10,6 +10,7 @@ from time import sleep
 from dotenv import load_dotenv
 load_dotenv()
 
+
 class TestDemoUserFunctionality(StaticLiveServerTestCase):
 
     # setUp and tearDown methods to open/close Chrome for each individual test (slower)

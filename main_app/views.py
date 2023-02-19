@@ -452,7 +452,7 @@ class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         next_url = self.request.GET.get('next')
-        if next_url:  # if template contains "next"
+        if next_url:  # if link in template contains "next"
             return next_url
         return '/'  # otherwise go to this url
 

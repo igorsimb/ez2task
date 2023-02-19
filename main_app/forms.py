@@ -28,7 +28,7 @@ class ItemCreateForm(forms.ModelForm):
                    'deadline_time': TimeInput(attrs={'value': time}),
                    }
 
-    # Show only users from logged in user's company in assigned_to list
+    # Show only users from logged in user's company in assigned_to list (self.fields['assigned_to'].queryset)
     # source: https://simpleisbetterthancomplex.com/questions/2017/03/22/how-to-dynamically-filter-modelchoices-queryset-in-a-modelform.html
     def __init__(self, user, *args, **kwargs):
         super(ItemCreateForm, self).__init__(*args, **kwargs)
@@ -55,7 +55,7 @@ class ItemCreateForm(forms.ModelForm):
 
         if user.company is not None:
             if user.account_type == 'Admin':
-                self.fields['assigned_to'].queryset = User.objects.filter(company__name__contains=user.company.name)
+                self.fields['assigned_to'].queryset = User.objects.filter(company__name=user.company.name)
             else:
                 self.fields['assigned_to'].queryset = User.objects.filter(id=user.id)
                 self.fields['assigned_to'].label_from_instance = lambda obj: "Me"

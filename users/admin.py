@@ -4,7 +4,7 @@ from users.models import User, Profile, Department, Company
 
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 # bulk add users to Company 1
