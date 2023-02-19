@@ -11,36 +11,26 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
-import django_heroku
 import dj_database_url
-from dotenv import load_dotenv
+from environs import Env
+
+env = Env()
+env.read_env()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-dotenv_path = BASE_DIR / '.env'
-load_dotenv(dotenv_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = str(os.getenv('SECRET_KEY'))
-DEBUG = os.getenv("DEBUG") == 'True'
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env.bool('DEBUG', default=False)
+DEPLOYED = env.bool('DEPLOYED', default=True)
 
-DEPLOYED = False
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# if DEPLOYED:
-#     DEBUG = os.getenv('DEBUG')
-# else:
-#     DEBUG = True
-
-
-
-ALLOWED_HOSTS = ['localhost', 'ez2task.herokuapp.com', 'ez2task.com']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -100,7 +90,7 @@ WSGI_APPLICATION = 'ez2task.wsgi.application'
 
 if DEPLOYED:
     DATABASES = {
-        'default': dj_database_url.config()
+        'default': dj_database_url.parse(env('DATABASE_URL'))
     }
 else:
     DATABASES = {
@@ -109,6 +99,11 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
+# DATABASES = {
+#     'default': dj_database_url.parse(env('DATABASE_URL'))
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -147,7 +142,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-django_heroku.settings(locals())
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
