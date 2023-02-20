@@ -40,6 +40,7 @@ class Item(models.Model):
     complete = models.BooleanField(default=False)
 
     # in templates: item.deadline_date_time
+    @property
     def deadline_date_time(self):
         return datetime.datetime.combine(self.deadline_date, self.deadline_time)
 

@@ -43,25 +43,27 @@ class UserCreationFormExtended(UserCreationForm):
         self.fields['email'] = forms.EmailField(label=_("E-mail"), max_length=75)
         self.fields['username'] = forms.CharField(label=_("Name"), max_length=150)
 
+
 UserAdmin.add_form = UserCreationFormExtended
 UserAdmin.add_fieldsets = (
     (None, {
         'classes': ('wide',),
-        'fields': ('email', 'username', 'password1', 'password2','department')
+        'fields': ('email', 'username', 'password1', 'password2', 'company')  # 'department' currently not available
     }),
 )
+
 
 # Users TabularInline
 class UserInline(admin.TabularInline):
     model = User
     fields = ('username',)
 
+
 class CompanyAdmin(admin.ModelAdmin):
     inlines = [UserInline]
 
     class Meta:
         model = Company
-
 
 
 admin.site.register(User, CustomUserAdmin)
