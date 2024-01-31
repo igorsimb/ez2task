@@ -37,6 +37,7 @@ class CustomUserAdmin(UserAdmin):
 # Custom user creation form in admin site to include email field
 # SOURCE: https://gist.github.com/riklomas/511440
 
+
 class UserCreationFormExtended(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(UserCreationFormExtended, self).__init__(*args, **kwargs)
